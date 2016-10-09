@@ -1,8 +1,8 @@
-#include <iostream>
-#include <SDL2/SDL.h>
+#include "graphics.h"
 
-int WinMain()
+int main(int argv, char** args)
 {
-	std::cout << "Hello" << std::endl;
+	Graphics g;
+	Graphics g2;
 	return 0;
 }
