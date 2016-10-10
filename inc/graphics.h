@@ -8,8 +8,8 @@ class SDL_Renderer;
 
 class Graphics
 {
-	SDL_Window* window;
 	SDL_Renderer* renderer;
+	SDL_Window* window;
 	
 public:
 	Graphics();

@@ -1,8 +1,7 @@
-#include "graphics.h"
+#include "game.h"
 
 int main(int argv, char** args)
 {
-	Graphics g;
-	Graphics g2;
+	Game game;
 	return 0;
 }
