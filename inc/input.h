@@ -2,9 +2,9 @@
 #define INPUT_H
 
 #include <map>
-#include <SDL2/SDL.h>
+#include <SDL2\SDL.h>
 
-//The clss responsible for managing input from the keyboard.
+//The class responsible for managing input from the keyboard.
 
 class Input
 {

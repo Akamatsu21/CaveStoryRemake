@@ -1,12 +1,16 @@
 #ifndef GAME_H
 #define GAME_H
 
-//The class responsible for running the main game loop.
+#include "sprite.h"
 
 class Graphics;
 
+//The class responsible for running the main game loop.
+
 class Game
 {
+	Sprite player;
+	
 	void draw(Graphics &graphics);
 	void gameLoop();
 	void update(float elapsed_time);
