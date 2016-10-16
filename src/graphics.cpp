@@ -1,12 +1,13 @@
 #include <iostream>
 #include <SDL2\SDL.h>
 #include <SDL2\SDL_image.h>
+#include "globals.h"
 #include "graphics.h"
 
 Graphics::Graphics()
 {
-	SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
-	SDL_SetWindowTitle(window, "Cave Story");
+	SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &window, &renderer);
+	SDL_SetWindowTitle(window, "Cavestory");
 }
 
 void Graphics::blitSurface(SDL_Texture *image, SDL_Rect *src, SDL_Rect *dest)
@@ -34,6 +35,12 @@ SDL_Surface* Graphics::loadImage(const std::string &file_path)
 	{
 		spritesheets[file_path] = IMG_Load(file_path.c_str());
 	}
+	
+	if(spritesheets[file_path] == NULL) 
+	{
+        std::cerr << "ERROR: image load failed: " << SDL_GetError() << std::endl;
+        return NULL;
+    }
 	
 	return spritesheets[file_path];
 }

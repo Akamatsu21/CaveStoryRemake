@@ -9,9 +9,9 @@ class Graphics;
 
 class Game
 {
-	Sprite player;
+	//Sprite player;
 	
-	void draw(Graphics &graphics);
+	void draw(Graphics &graphics, Sprite &player);
 	void gameLoop();
 	void update(float elapsed_time);
 

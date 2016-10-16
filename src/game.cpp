@@ -16,7 +16,7 @@ Game::Game()
 	gameLoop();
 }
 
-void Game::draw(Graphics &graphics)
+void Game::draw(Graphics &graphics, Sprite &player)
 {
 	graphics.clear();
 	
@@ -32,7 +32,7 @@ void Game::gameLoop()
 	SDL_Event event;
 	int last_update_time = SDL_GetTicks();
 	
-	player = Sprite(graphics, "content\\MyChar.png", 0, 0, 16, 16, 100, 100);
+	Sprite player(graphics, "content\\MyChar.png", 0, 0, 16, 16, 100, 100);
 	
 	for(;;)
 	{
@@ -51,6 +51,10 @@ void Game::gameLoop()
 			{
 				input.keyUpEvent(event);
 			}
+			else if(event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
+			{
+				
+			}
 			else if(event.type == SDL_QUIT)
 			{
 				return;
@@ -67,7 +71,7 @@ void Game::gameLoop()
 		update(std::min(MAX_FRAME_TIME, elapsed_time));
 		last_update_time = current_time;
 		
-		draw(graphics);
+		draw(graphics, player);
 	}
 }
 

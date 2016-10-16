@@ -1,10 +1,11 @@
 #include <iostream>
+#include "globals.h"
 #include "graphics.h"
 #include "sprite.h"
 
 Sprite::Sprite()
 {
-	spritesheet = NULL;
+	//spritesheet = NULL;
 }
 
 Sprite::Sprite(Graphics &graphics, std::string file_path, int src_x, int src_y, int h, int w, float start_x, float start_y):
@@ -24,7 +25,7 @@ Sprite::~Sprite() {}
 
 void Sprite::draw(Graphics &graphics, int x, int y)
 {
-	SDL_Rect dest_rect = { x, y, src_rect.w, src_rect.h };
+	SDL_Rect dest_rect = { x, y, src_rect.w * globals::SPRITE_SCALE, src_rect.h * globals::SPRITE_SCALE };
 	graphics.blitSurface(spritesheet, &src_rect, &dest_rect);
 }
 
