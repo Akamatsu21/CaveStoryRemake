@@ -5,7 +5,10 @@
 
 Sprite::Sprite()
 {
-	//spritesheet = NULL;
+	pos_x = 0;
+	pos_y = 0;
+	src_rect = { 0, 0, 0, 1 };
+	spritesheet = NULL;
 }
 
 Sprite::Sprite(Graphics &graphics, std::string file_path, int src_x, int src_y, int h, int w, float start_x, float start_y):

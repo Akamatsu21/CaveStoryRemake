@@ -16,7 +16,7 @@ Game::Game()
 	gameLoop();
 }
 
-void Game::draw(Graphics &graphics, Sprite &player)
+void Game::draw(Graphics &graphics)
 {
 	graphics.clear();
 	
@@ -32,7 +32,10 @@ void Game::gameLoop()
 	SDL_Event event;
 	int last_update_time = SDL_GetTicks();
 	
-	Sprite player(graphics, "content\\MyChar.png", 0, 0, 16, 16, 100, 100);
+	//AnimatedSprite player(graphics, "content\\MyChar.png", 0, 0, 16, 16, 100, 100);
+	player = AnimatedSprite(graphics, "content\\MyChar.png", 0, 0, 16, 16, 120, 120, 100);
+	player.setupAnimations();
+	player.playAnimation("RunRight");
 	
 	for(;;)
 	{
@@ -71,13 +74,13 @@ void Game::gameLoop()
 		update(std::min(MAX_FRAME_TIME, elapsed_time));
 		last_update_time = current_time;
 		
-		draw(graphics, player);
+		draw(graphics);
 	}
 }
 
 void Game::update(float elapsed_time)
 {
-	
+	player.update(elapsed_time);
 }
 
 Game::~Game()

@@ -2,12 +2,17 @@
 #define SPRITE_H
 
 #include <SDL2\SDL.h>
+#include <string>
+
+class Graphics;
 
 //The class holding information for sprites
 
 class Sprite
 {
 	float pos_x, pos_y;
+
+protected:
 	SDL_Texture* spritesheet;
 	SDL_Rect src_rect;
 	
