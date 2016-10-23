@@ -1,6 +1,14 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+enum Direction
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 namespace globals
 {
 	const int SCREEN_WIDTH = 640;

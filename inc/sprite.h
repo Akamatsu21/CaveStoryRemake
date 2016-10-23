@@ -10,9 +10,9 @@ class Graphics;
 
 class Sprite
 {
-	float pos_x, pos_y;
 
 protected:
+	float pos_x, pos_y;
 	SDL_Texture* spritesheet;
 	SDL_Rect src_rect;
 	

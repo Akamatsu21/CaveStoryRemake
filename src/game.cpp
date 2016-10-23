@@ -20,7 +20,7 @@ void Game::draw(Graphics &graphics)
 {
 	graphics.clear();
 	
-	player.draw(graphics, 100, 100);
+	player.draw(graphics);
 	
 	graphics.flip();
 }
@@ -32,10 +32,7 @@ void Game::gameLoop()
 	SDL_Event event;
 	int last_update_time = SDL_GetTicks();
 	
-	//AnimatedSprite player(graphics, "content\\MyChar.png", 0, 0, 16, 16, 100, 100);
-	player = AnimatedSprite(graphics, "content\\MyChar.png", 0, 0, 16, 16, 120, 120, 100);
-	player.setupAnimations();
-	player.playAnimation("RunRight");
+	player = Player(graphics, 100, 100);
 	
 	for(;;)
 	{
@@ -67,6 +64,18 @@ void Game::gameLoop()
 		if(input.wasPressed(SDL_SCANCODE_ESCAPE))
 		{
 			return;
+		}
+		else if(input.isHeld(SDL_SCANCODE_LEFT))
+		{
+			player.moveLeft();
+		}
+		else if(input.isHeld(SDL_SCANCODE_RIGHT))
+		{
+			player.moveRight();
+		}
+		else
+		{
+			player.stopMoving();
 		}
 		
 		int current_time = SDL_GetTicks();

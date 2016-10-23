@@ -11,5 +11,5 @@ obj/%.o : src/%.cpp
 	$(COMP) -I'E:\Program Files\SDL2-2.0.4\x86_64-w64-mingw32\include' -I'E:\Program Files\SDL2_image-2.0.1\x86_64-w64-mingw32\include' -I'inc' $(FLAGS) -c $^ -o $@
 
 clean:
-	rm bin\*.exe
-	rm obj\*.o
+	del bin\*.exe
+	del obj\*.o

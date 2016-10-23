@@ -25,11 +25,6 @@ void AnimatedSprite::addAnimation(int frames, int x, int y, std::string name, in
 	offsets.insert(std::pair<std::string, Vector2>(name, offset));
 }
 
-void AnimatedSprite::animationDone(std::string name)
-{
-	
-}
-
 void AnimatedSprite::draw(Graphics &graphics, int x, int y)
 {
 	if(visible)
@@ -57,13 +52,6 @@ void AnimatedSprite::resetAnimations()
 	animations.clear();
 	offsets.clear();
 }
-
-void AnimatedSprite::setupAnimations()
-{
-	addAnimation(3, 0, 0, "RunLeft", 16, 16, Vector2(0, 0));
-	addAnimation(3, 0, 1, "RunRight", 16, 16, Vector2(0, 0));
-}
-
 void AnimatedSprite::setVisible(bool vis)
 {
 	visible = vis;
