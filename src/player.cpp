@@ -8,9 +8,9 @@ Player::Player():
 }
 
 Player::Player(Graphics &graphics, float x, float y):
-	AnimatedSprite(graphics, "content\\MyChar.png", 0, 0, 16, 16, x, y, 100)
+	AnimatedSprite(graphics, "content\\sprites\\MyChar.png", 0, 0, 16, 16, x, y, 100)
 {
-	graphics.loadImage("content\\MyChar.png");
+	graphics.loadImage("content\\sprites\\MyChar.png");
 	setupAnimations();
 	playAnimation("IdleRight");
 }

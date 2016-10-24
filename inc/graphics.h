@@ -4,10 +4,10 @@
 #include <map>
 #include <string>
 
-class SDL_Rect;
+struct SDL_Rect;
 class SDL_Renderer;
 class SDL_Surface;
-class SDL_Texture;
+struct SDL_Texture;
 class SDL_Window;
 
 //The class responsible for dealing with the game graphics.

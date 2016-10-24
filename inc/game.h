@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "player.h"
+#include "level.h"
 
 class Graphics;
 
@@ -9,6 +10,7 @@ class Graphics;
 
 class Game
 {
+	Level level;
 	Player player;
 	
 	void draw(Graphics &graphics);
