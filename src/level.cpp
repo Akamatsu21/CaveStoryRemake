@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include "globals.h"
 #include "graphics.h"
 #include "level.h"
 
@@ -31,14 +32,14 @@ void Level::loadMap(Graphics &graphics, std::string name)
 void Level::draw(Graphics &graphics)
 {
 	SDL_Rect src = { 0, 0, 64, 64 };
-	SDL_Rect dest = { 0, 0, 64, 64 };
+	SDL_Rect dest = { 0, 0, 64 * globals::SPRITE_SCALE, 64 * globals::SPRITE_SCALE };
 	
 	for(unsigned int x = 0; x < size.x; x += 64)
 	{
 		for(unsigned int y = 0; y < size.y; y += 64)
 		{
-			dest.x = x;
-			dest.y = y;
+			dest.x = x * globals::SPRITE_SCALE;
+			dest.y = y * globals::SPRITE_SCALE;
 			graphics.blitSurface(background, &src, &dest);
 		}
 	}
