@@ -4,11 +4,14 @@
 Player::Player():
 	AnimatedSprite()
 {
-	
+	dx = 0;
+	dy = 0;
+	facing = RIGHT;
+	on_ground = false;
 }
 
 Player::Player(Graphics &graphics, float x, float y):
-	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, x, y, 100)
+	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, x, y, 100), dx(0), dy(0), facing(RIGHT), on_ground(false)
 {
 	graphics.loadImage("..\\content\\sprites\\MyChar.png");
 	setupAnimations();
@@ -23,6 +26,16 @@ void Player::animationDone(std::string name)
 void Player::draw(Graphics &graphics)
 {
 	AnimatedSprite::draw(graphics, pos_x, pos_y);
+}
+
+float Player::getX()
+{
+	return pos_x;
+}
+
+float Player::getY()
+{
+	return pos_y;
 }
 
 void Player::moveLeft()
@@ -55,7 +68,17 @@ void Player::stopMoving()
 	
 void Player::update(float elapsed_time)
 {
+	//apply gravity
+	if(dy <= stats::GRAVITY_CAP)
+	{
+		dy += stats::GRAVITY * elapsed_time;
+	}
+	
+	//move by dx
 	pos_x += dx * elapsed_time;
+	
+	//move by dy
+	pos_y += dy * elapsed_time;
 	
 	AnimatedSprite::update(elapsed_time);
 }

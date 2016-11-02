@@ -24,6 +24,7 @@ void Graphics::flip()
 {
 	SDL_RenderPresent(renderer);
 }
+
 SDL_Renderer* Graphics::getRenderer()
 {
 	return renderer;
