@@ -1,4 +1,3 @@
-#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <sstream>
@@ -17,8 +16,8 @@ Level::Level()
 	spawn_point = Vector2(0, 0);
 	tile_size = Vector2(0, 0);
 }
-Level::Level(Graphics &graphics, std::string name, Vector2 point):
-	map_name(name), map_size(Vector2(0, 0)), spawn_point(point), tile_size(Vector2(0,0))
+Level::Level(Graphics &graphics, std::string name):
+	map_name(name), map_size(Vector2(0, 0)), tile_size(Vector2(0,0))
 {
 	loadMap(graphics, map_name);
 }
@@ -28,13 +27,33 @@ Level::~Level()
 	
 }
 
+std::vector<Rectangle> Level::checkTileCollisions(Rectangle &rect)
+{
+	std::vector<Rectangle> rects;
+	for(unsigned int i = 0; i < collision_rects.size(); i++)
+	{
+		if(collision_rects[i].collides(rect))
+		{
+			rects.push_back(collision_rects[i]);
+		}
+	}
+	return rects;
+}
+
+Vector2 Level::getPlayerSpawnPoint()
+{
+	return spawn_point;
+}
+
 void Level::loadMap(Graphics &graphics, std::string name)
 {
 	//Parse the .tmx file
 	XMLDocument doc;
-	std::stringstream ss;
-	ss << "..\\content\\maps\\" << map_name << ".tmx";
-	doc.LoadFile(ss.str().c_str());
+	{
+		std::stringstream ss;
+		ss << "..\\content\\maps\\" << map_name << ".tmx";
+		doc.LoadFile(ss.str().c_str());
+	}
 	
 	//Get the map size
 	XMLElement *map_node = doc.FirstChildElement("map");
@@ -83,14 +102,13 @@ void Level::loadMap(Graphics &graphics, std::string name)
 			{
 				//Get the tile's gid
 				int gid = tile_node->IntAttribute("gid");
-				//std::cerr << gid << std::endl;
 				
 				//If it's the 0 tile, don't draw
 				if(gid != 0)
 				{
 					//Get tileset
 					Tileset *tls;
-					for(int i = 0; i < tilesets.size(); i++)
+					for(unsigned int i = 0; i < tilesets.size(); i++)
 					{
 						//If it's the right one, the next tileset wil be after current gid
 						if(tilesets[i].first_gid <= gid)
@@ -107,18 +125,12 @@ void Level::loadMap(Graphics &graphics, std::string name)
 						int mx = (tile_count % mw) * tw;
 						int my = (tile_count / mw) * th;
 						Vector2 map_pos = Vector2(mx, my);
-						//std::cerr << "mx" << mx << std::endl;
-						//std::cerr << "my" << my << std::endl;
 				
 						//Get the positon on the tileset
 						int tsw, tsh;
 						SDL_QueryTexture(tls->image, NULL, NULL, &tsw, &tsh);
-						//std::cerr << "tsw" << tsw << std::endl;
-						//std::cerr << "tsh" << tsh << std::endl;
 						int tsx = (gid % (tsw / tw) - 1) * tw;
 						int tsy = (gid / (tsw / tw)) * th;
-						//std::cerr << "tsx" << tsx << std::endl;
-						//std::cerr << "tsy" << tsy << std::endl;
 						Vector2 tileset_pos = Vector2(tsx, tsy);
 						
 						//Build tile
@@ -135,12 +147,55 @@ void Level::loadMap(Graphics &graphics, std::string name)
 		
 		layer_node = layer_node->NextSiblingElement("layer");
 	}
+	
+	//Parse the collisions
+	XMLElement *object_group = map_node->FirstChildElement("objectgroup");
+	while(object_group)
+	{
+		std::string name = std::string(object_group->Attribute("name"));
+		if(name == "collisions")
+		{
+			XMLElement *object_node = object_group->FirstChildElement("object");
+			while(object_node)
+			{
+				float rx, ry, rw, rh;
+				rx = object_node->FloatAttribute("x");
+				ry = object_node->FloatAttribute("y");
+				rw = object_node->FloatAttribute("width");
+				rh = object_node->FloatAttribute("height");
+				
+				collision_rects.push_back(Rectangle(std::ceil(rx) * globals::SPRITE_SCALE, std::ceil(ry) * globals::SPRITE_SCALE,
+													std::ceil(rw) * globals::SPRITE_SCALE, std::ceil(rh) * globals::SPRITE_SCALE));
+				
+				object_node = object_node->NextSiblingElement("object");
+			}
+		}
+		else if(name == "spawn points")
+		{
+			XMLElement *object_node = object_group->FirstChildElement("object");
+			while(object_node)
+			{
+				float px = object_node->FloatAttribute("x");
+				float py = object_node->FloatAttribute("y");
+				std::string object_name = std::string(object_node->Attribute("name"));
+				
+				if(object_name == "player")
+				{
+					spawn_point = Vector2(std::ceil(px) * globals::SPRITE_SCALE, std::ceil(py) * globals::SPRITE_SCALE);
+				}
+				
+				object_node = object_node->NextSiblingElement("object");
+			}
+		}
+		
+		object_group = object_group->NextSiblingElement("objectgroup");
+	}
 }
 
 
 void Level::draw(Graphics &graphics)
 {
-	for(int i = 0; i < tiles.size(); i++)
+	for(unsigned int i = 0; i < tiles.size(); i++)
 	{
 		tiles[i].draw(graphics);
 	}

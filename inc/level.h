@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "tile.h"
+#include "rectangle.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -19,6 +20,7 @@ class Level
 	Vector2 spawn_point;
 	Vector2 tile_size;
 	
+	std::vector<Rectangle> collision_rects;
 	std::vector<Tile> tiles;
 	std::vector<Tileset> tilesets;
 	
@@ -26,11 +28,15 @@ class Level
 	
 public:
 	Level();
-	Level(Graphics &graphics, std::string name, Vector2 point);
+	Level(Graphics &graphics, std::string name);
 	~Level();
 	
 	void draw(Graphics &graphics);
 	void update(float elapsed_time);
+	
+	Vector2 getPlayerSpawnPoint();
+	
+	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
 };
 
 struct Tileset

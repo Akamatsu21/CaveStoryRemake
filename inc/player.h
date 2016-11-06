@@ -23,7 +23,7 @@ class Player: public AnimatedSprite
 public:
 
 	Player();
-	Player(Graphics &graphics, float x, float y);
+	Player(Graphics &graphics, Vector2 spawn_point);
 	
 	inline float getX();
 	inline float getY();
@@ -32,6 +32,7 @@ public:
 	void update(float elapsed_time);
 	
 	virtual void animationDone(std::string name);
+	void handleTileCollisions(std::vector<Rectangle> &rects); //handles collision with all colliding tiles
 	virtual void setupAnimations();
 	
 	void moveLeft(); //move the player by -dx

@@ -10,8 +10,8 @@ Player::Player():
 	on_ground = false;
 }
 
-Player::Player(Graphics &graphics, float x, float y):
-	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, x, y, 100), dx(0), dy(0), facing(RIGHT), on_ground(false)
+Player::Player(Graphics &graphics, Vector2 spawn_point):
+	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100), dx(0), dy(0), facing(RIGHT), on_ground(false)
 {
 	graphics.loadImage("..\\content\\sprites\\MyChar.png");
 	setupAnimations();
@@ -36,6 +36,38 @@ float Player::getX()
 float Player::getY()
 {
 	return pos_y;
+}
+
+void Player::handleTileCollisions(std::vector<Rectangle> &rects)
+{
+	//check collision's side
+	for(unsigned int i = 0; i < rects.size(); i++)
+	{
+		sides::Side collision_side = collisionSide(rects[i]);
+		if(collision_side != sides::NO_SIDE)
+		{
+			switch(collision_side)
+			{
+				case sides::TOP_SIDE:
+					pos_y = rects[i].bottomBorder() + 1;
+					dy = 0;
+					break;
+				case sides::BOTTOM_SIDE:
+					pos_y = rects[i].topBorder() - bounding_box.getHeight() - 1;
+					dy = 0;
+					on_ground = true;
+					break;
+				case sides::LEFT_SIDE:
+					pos_x = rects[i].rightBorder() + 1;
+					break;
+				case sides::RIGHT_SIDE:
+					pos_x = rects[i].leftBorder() - bounding_box.getWidth() - 1;
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }
 
 void Player::moveLeft()

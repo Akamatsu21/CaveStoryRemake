@@ -1,8 +1,9 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include <SDL2\SDL.h>
 #include <string>
+#include <SDL2\SDL.h>
+#include "rectangle.h"
 
 class Graphics;
 
@@ -12,6 +13,7 @@ class Sprite
 {
 
 protected:
+	Rectangle bounding_box;
 	float pos_x, pos_y;
 	SDL_Texture* spritesheet;
 	SDL_Rect src_rect;
@@ -23,5 +25,8 @@ public:
 	
 	void draw(Graphics &graphics, int x, int y);
 	virtual void update();
+	
+	sides::Side collisionSide(Rectangle &rect); //determine on which side the collision is happening
+	Rectangle& getBoundingBox();
 };
 #endif

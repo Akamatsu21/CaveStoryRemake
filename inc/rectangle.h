@@ -32,16 +32,16 @@ public:
 	{
 		switch(s)
 		{
-			case TOP_SIDE:
+			case sides::TOP_SIDE:
 				return topBorder();
-			case BOTTOM_SIDE:
+			case sides::BOTTOM_SIDE:
 				return bottomBorder();
-			case LEFT_SIDE:
+			case sides::LEFT_SIDE:
 				return leftBorder();
-			case RIGHT_SIDE:
+			case sides::RIGHT_SIDE:
 				return rightBorder();
 			default:
-				return NO_SIDE;
+				return sides::NO_SIDE;
 		}
 	}
 	
