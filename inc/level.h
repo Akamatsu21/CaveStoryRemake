@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "tile.h"
-#include "rectangle.h"
+#include "slope.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -21,6 +21,7 @@ class Level
 	Vector2 tile_size;
 	
 	std::vector<Rectangle> collision_rects;
+	std::vector<Slope> slopes;
 	std::vector<Tile> tiles;
 	std::vector<Tileset> tilesets;
 	
@@ -37,6 +38,7 @@ public:
 	Vector2 getPlayerSpawnPoint();
 	
 	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
+	std::vector<Slope> checkSlopeCollision(Rectangle &rect);
 };
 
 struct Tileset
