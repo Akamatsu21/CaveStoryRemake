@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include "player.h"
+#include <iostream>
 
 Player::Player():
 	AnimatedSprite()
@@ -36,6 +37,23 @@ float Player::getX()
 float Player::getY()
 {
 	return pos_y;
+}
+
+void Player::handleSlopeCollisions(std::vector<Slope> &slopes)
+{
+	for(unsigned int i = 0; i < slopes.size(); i++)
+	{
+		//where on the slope the player is touching
+		int b = slopes[i].getPoint1().y - slopes[i].getSlope() * slopes[i].getPoint1().x;
+		int center_x = bounding_box.centerX();
+		int y = slopes[i].getSlope() * center_x + b;
+
+		if(on_ground)
+		{
+			pos_y = y - bounding_box.getHeight();
+		}
+	}
+	//std::cerr << pos_y << std::endl;
 }
 
 void Player::handleTileCollisions(std::vector<Rectangle> &rects)

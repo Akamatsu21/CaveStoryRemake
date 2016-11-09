@@ -99,6 +99,12 @@ void Game::update(float elapsed_time)
 	{
 		player.handleTileCollisions(rects);
 	}
+
+	std::vector<Slope> slopes = level.checkSlopeCollisions(player.getBoundingBox());
+	if(slopes.size() > 0)
+	{
+		player.handleSlopeCollisions(slopes);
+	}
 }
 
 Game::~Game()

@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "animated_sprite.h"
+#include "slope.h"
 
 //Player constants
 
@@ -32,11 +33,12 @@ public:
 	void update(float elapsed_time);
 	
 	virtual void animationDone(std::string name);
-	void handleTileCollisions(std::vector<Rectangle> &rects); //handles collision with all colliding tiles
+	void handleSlopeCollisions(std::vector<Slope> &slopes);	  //handles collisions with all colliding slopes
+	void handleTileCollisions(std::vector<Rectangle> &rects); //handles collisions with all colliding tiles
 	virtual void setupAnimations();
 	
-	void moveLeft(); //move the player by -dx
-	void moveRight(); //move the player by +dx
+	void moveLeft();   //move the player by -dx
+	void moveRight();  //move the player by +dx
 	void stopMoving(); //play the idle animation
 };
 

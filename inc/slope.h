@@ -17,9 +17,9 @@ public:
 	Slope(Vector2 p1, Vector2 p2):
 		point1(p1), point2(p2)
 	{
-		if(point1.x - point2.x != 0)
+		if(point2.x - point1.x != 0)
 		{
-			slope = (fabs(point2.y - point1.y) / (fabs(point2.x - point1.x)));
+			slope = ((fabs(point2.y) - fabs(point1.y)) / (fabs(point2.x) - fabs(point1.x)));
 		}
 	}
 	

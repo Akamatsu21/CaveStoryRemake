@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
-//class holding utility functions
+//struct holding utility functions
 
-class Utils
+struct Utils
 {
 	//split text by c, store in parts, return the size
 	static unsigned int split(std::string text, std::vector<std::string> &parts, char c)

@@ -38,7 +38,7 @@ public:
 	Vector2 getPlayerSpawnPoint();
 	
 	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
-	std::vector<Slope> checkSlopeCollision(Rectangle &rect);
+	std::vector<Slope> checkSlopeCollisions(Rectangle &rect);
 };
 
 struct Tileset

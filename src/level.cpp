@@ -1,9 +1,10 @@
-#include <algorithm>
+
 #include <cmath>
 #include <sstream>
 #include <SDL2/SDL.h>
 #include "tinyxml2.h"
 #include "graphics.h"
+#include "utils.h"
 #include "level.h"
 
 using namespace tinyxml2;
@@ -25,6 +26,19 @@ Level::Level(Graphics &graphics, std::string name):
 Level::~Level()
 {
 	
+}
+
+std::vector<Slope> Level::checkSlopeCollisions(Rectangle &rect)
+{
+	std::vector<Slope> sl;
+	for(unsigned int i = 0; i < slopes.size(); i++)
+	{
+		if(slopes[i].collides(rect))
+		{
+			sl.push_back(slopes[i]);
+		}
+	}
+	return sl;
 }
 
 std::vector<Rectangle> Level::checkTileCollisions(Rectangle &rect)
@@ -167,6 +181,39 @@ void Level::loadMap(Graphics &graphics, std::string name)
 				collision_rects.push_back(Rectangle(std::ceil(rx) * globals::SPRITE_SCALE, std::ceil(ry) * globals::SPRITE_SCALE,
 													std::ceil(rw) * globals::SPRITE_SCALE, std::ceil(rh) * globals::SPRITE_SCALE));
 				
+				object_node = object_node->NextSiblingElement("object");
+			}
+		}
+		else if(name == "slopes")
+		{
+			XMLElement *object_node = object_group->FirstChildElement("object");
+			while(object_node)
+			{
+				std::vector<Vector2> points;
+				Vector2 p1 = Vector2(std::ceil(object_node->FloatAttribute("x")), std::ceil(object_node->FloatAttribute("y")));
+				XMLElement *polyline_node = object_node->FirstChildElement("polyline");
+				if(polyline_node)
+				{
+					std::vector<std::string> pairs;
+					std::string point_string = std::string(polyline_node->Attribute("points"));
+					Utils::split(point_string, pairs, ' ');
+
+					//split pairs and store in the vector
+					for(unsigned int i = 0; i < pairs.size(); i++)
+					{
+						std::vector<std::string> v;
+						Utils::split(pairs[i], v, ',');
+						points.push_back(Vector2(std::stoi(v[0]), std::stoi(v[1])));
+					}
+				}
+
+				for(unsigned int i = 0; i < points.size() - 1; i++)
+				{
+					slopes.push_back(Slope(Vector2((p1.x + points[i].x) 	* globals::SPRITE_SCALE, (p1.y + points[i].y)	  * globals::SPRITE_SCALE),
+										   Vector2((p1.x + points[i + 1].x) * globals::SPRITE_SCALE, (p1.y + points[i + 1].y) * globals::SPRITE_SCALE)));
+
+				}
+
 				object_node = object_node->NextSiblingElement("object");
 			}
 		}
