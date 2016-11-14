@@ -67,8 +67,13 @@ void Player::handleTileCollisions(std::vector<Rectangle> &rects)
 			switch(collision_side)
 			{
 				case sides::TOP_SIDE:
-					pos_y = rects[i].bottomBorder() + 1;
 					dy = 0;
+					pos_y = rects[i].bottomBorder() + 1;
+					if(on_ground)
+					{
+						dx = 0;
+						pos_x -= facing == RIGHT ? 0.5 : -0.5;
+					}
 					break;
 				case sides::BOTTOM_SIDE:
 					pos_y = rects[i].topBorder() - bounding_box.getHeight() - 1;
@@ -85,6 +90,15 @@ void Player::handleTileCollisions(std::vector<Rectangle> &rects)
 					break;
 			}
 		}
+	}
+}
+
+void Player::jump()
+{
+	if(on_ground)
+	{
+		dy = stats::JUMP_SPEED * (-1);
+		on_ground = false;
 	}
 }
 

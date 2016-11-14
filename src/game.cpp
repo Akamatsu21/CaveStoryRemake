@@ -79,6 +79,11 @@ void Game::gameLoop()
 		{
 			player.stopMoving();
 		}
+
+		if(input.wasPressed(SDL_SCANCODE_Z))
+		{
+			player.jump();
+		}
 		
 		int current_time = SDL_GetTicks();
 		int elapsed_time = current_time - last_update_time;
