@@ -1,5 +1,5 @@
-
 #include <cmath>
+#include <iostream>
 #include <sstream>
 #include <SDL2/SDL.h>
 #include "tinyxml2.h"
@@ -60,6 +60,16 @@ std::vector<Rectangle> Level::checkTileCollisions(Rectangle &rect)
 	return rects;
 }
 
+// Get tile's position on the tileset.
+Vector2 Level::getTilesetPosition(Tileset *tset, int gid, int tile_width, int tile_height)
+{
+	int tileset_width, tileset_height;
+	SDL_QueryTexture(tset->image, nullptr, nullptr, &tileset_width, &tileset_height);
+	int tsx = ((gid - 1) % (tileset_width / tile_width)) * tile_width;
+	int tsy = ((gid - tset->first_gid) / (tileset_width / tile_width)) * tile_height;
+	return Vector2(tsx, tsy);
+}
+
 // Getter for spawn point.
 Vector2 Level::getPlayerSpawnPoint()
 {
@@ -105,8 +115,42 @@ void Level::loadMap(Graphics &graphics)
 		std::stringstream ss;
 		ss << "..\\content\\tilesets\\" << image_path.substr(12);
 		SDL_Texture *tex = SDL_CreateTextureFromSurface(graphics.getRenderer(), graphics.loadImage(ss.str()));
-		
+
+		// Save tileset.
 		tilesets.push_back(Tileset(tex, first_gid));
+
+		// Load all animated tiles for this tileset.
+		XMLElement *tile_node = tileset_node->FirstChildElement("tile");
+		while(tile_node)
+		{
+			// Get tileset position info of animation.
+			AnimatedTileInfo animation;
+			animation.first_gid = first_gid;
+			animation.first_tile_id = tile_node->IntAttribute("id") + first_gid;
+
+			// Load all animations for this tile.
+			XMLElement *animation_node = tile_node->FirstChildElement("animation");
+			while(animation_node)
+			{
+				// Load all frames of this animation.
+				XMLElement *frame_node = animation_node->FirstChildElement("frame");
+				while(frame_node)
+				{
+					// Get duration and id of the frame.
+					animation.duration = frame_node->IntAttribute("duration");
+					animation.tile_ids.push_back(frame_node->IntAttribute("tileid") + first_gid);
+
+					frame_node = frame_node->NextSiblingElement("frame");	
+				}
+
+				animation_node = animation_node->NextSiblingElement("animation");
+			}
+
+			// Save animation info.
+			animations_info.push_back(animation);
+
+			tile_node = tile_node->NextSiblingElement("tile");
+		}
 		
 		tileset_node = tileset_node->NextSiblingElement("tileset");
 	}
@@ -138,7 +182,6 @@ void Level::loadMap(Graphics &graphics)
 						if(tilesets[i].first_gid <= gid)
 						{
 							tls = &(tilesets[i]);
-							break;
 						}
 					}
 					
@@ -151,14 +194,34 @@ void Level::loadMap(Graphics &graphics)
 						Vector2 map_pos = Vector2(mx, my);
 				
 						// Get the positon on the tileset.
-						int tsw, tsh;
-						SDL_QueryTexture(tls->image, nullptr, nullptr, &tsw, &tsh);
-						int tsx = (gid % (tsw / tw) - 1) * tw;
-						int tsy = (gid / (tsw / tw)) * th;
-						Vector2 tileset_pos = Vector2(tsx, tsy);
+						Vector2 tileset_pos = getTilesetPosition(tls, gid, tw, th);
 						
-						// Build tile.
-						tiles.push_back(Tile(tls->image, tile_size, tileset_pos, map_pos));
+						// Check if this tile has an animation.
+						bool is_animated = false;
+						for(AnimatedTileInfo info : animations_info)
+						{
+							if(info.first_tile_id == gid)
+							{
+								is_animated = true;
+
+								// Get ids of all frames and save them in a vector.
+								std::vector<Vector2> tileset_positions;
+								for(int id : info.tile_ids)
+								{
+									tileset_positions.push_back(getTilesetPosition(tls, id, tw, th));
+								}
+
+								// Build tile.
+								animated_tiles.push_back(AnimatedTile(tileset_positions, info.duration, tls->image, tile_size, map_pos));
+								break;
+							}
+						}
+
+						if(!is_animated)
+						{
+							// Build non-animated tile.
+							tiles.push_back(Tile(tls->image, tile_size, tileset_pos, map_pos));
+						}
 					}
 				}
 				
@@ -268,12 +331,22 @@ void Level::loadMap(Graphics &graphics)
 // Draw the map onto the screen, tile by tile.
 void Level::draw(Graphics &graphics)
 {
-	for(unsigned int i = 0; i < tiles.size(); ++i)
+	for(Tile tile : tiles)
 	{
-		tiles[i].draw(graphics);
+		tile.draw(graphics);
+	}
+
+	for(AnimatedTile tile : animated_tiles)
+	{
+		tile.draw(graphics);
 	}
 }
 
 // Update map.
 void Level::update(float elapsed_time)
-{}
+{
+	for(AnimatedTile &tile : animated_tiles)
+	{
+		tile.update(elapsed_time);
+	}
+}

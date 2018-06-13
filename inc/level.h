@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "tile.h"
+#include "animated_tile.h"
 #include "slope.h"
 
 class Graphics;
@@ -24,8 +24,12 @@ class Level
 	std::vector<Slope> slopes;				// all slopes on the map
 	std::vector<Tile> tiles;				// all tiles on the map
 	std::vector<Tileset> tilesets;			// all tilesets used in the map
+
+	std::vector<AnimatedTile> animated_tiles;		// all tiles on this level that have animations
+	std::vector<AnimatedTileInfo> animations_info;	// dataset for each animation
 	
 	void loadMap(Graphics &graphics);
+	Vector2 getTilesetPosition(Tileset *tset, int gid, int tile_width, int tile_height);
 	
 public:
 	Level();

@@ -10,6 +10,7 @@ struct SDL_Texture;
 
 class Tile
 {
+protected:
 	Vector2 map_pos;		// tile position on the screen
 	Vector2 size;			// tile height and width
 	SDL_Texture *tileset;	// tileset image

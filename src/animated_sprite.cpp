@@ -88,7 +88,10 @@ void AnimatedSprite::update(int elapsed_time)
 		}
 		else
 		{
-			if(animation_once) setVisible(false);
+			if(animation_once)
+			{
+				setVisible(false);
+			}
 			stopAnimation();
 		}
 	}
