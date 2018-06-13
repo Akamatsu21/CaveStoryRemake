@@ -8,17 +8,17 @@
 
 class Input
 {
-	std::map<SDL_Scancode, bool> held_keys;
-	std::map<SDL_Scancode, bool> pressed_keys;
-	std::map<SDL_Scancode, bool> released_keys;
+	std::map<SDL_Scancode, bool> held_keys;		// keys that are being held
+	std::map<SDL_Scancode, bool> pressed_keys;	// keys that were pressed this frame
+	std::map<SDL_Scancode, bool> released_keys;	// keys that were released this frame
 	
 public:
-	void beginNewFrame();	//reset all keys at the beginning of every frame
-	bool isHeld(SDL_Scancode key);	//is key held right now
-	void keyDownEvent(SDL_Event &event);	//called on key press
-	void keyUpEvent(SDL_Event &event);	//called on key release
-	bool wasPressed(SDL_Scancode key);	//was key pressed this frame
-	bool wasReleased(SDL_Scancode key);	//was key released this frame
+	void beginNewFrame();
+	bool isHeld(SDL_Scancode key);
+	void keyDownEvent(SDL_Event &event);
+	void keyUpEvent(SDL_Event &event);
+	bool wasPressed(SDL_Scancode key);
+	bool wasReleased(SDL_Scancode key);
 };
 
 #endif

@@ -7,16 +7,16 @@
 
 class Graphics;
 
-//The class holding information for sprites
+// The class holding information for sprites.
 
 class Sprite
 {
 
 protected:
-	Rectangle bounding_box;
-	float pos_x, pos_y;
-	SDL_Texture* spritesheet;
-	SDL_Rect src_rect;
+	Rectangle bounding_box;		// rectangle around the sprite, needed for collisions
+	float pos_x, pos_y;			// sprite position on the screen
+	SDL_Texture* spritesheet;	// spritesheet containing animation frames
+	SDL_Rect src_rect;			// current image of the sprite
 	
 public:
 	Sprite();
@@ -26,7 +26,8 @@ public:
 	void draw(Graphics &graphics, int x, int y);
 	virtual void update();
 	
-	sides::Side collisionSide(Rectangle &rect); //determine on which side the collision is happening
+	sides::Side collisionSide(Rectangle &rect);
 	Rectangle& getBoundingBox();
 };
+
 #endif

@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+// Sprite movement directions.
 enum Direction
 {
 	UP,
@@ -9,6 +10,7 @@ enum Direction
 	RIGHT
 };
 
+// Sizes used in the game.
 namespace globals
 {
 	const int SCREEN_WIDTH = 640;
@@ -16,6 +18,7 @@ namespace globals
 	const int SPRITE_SCALE = 2; 
 }
 
+// Sides of a Rectangle.
 namespace sides
 {
 	enum Side
@@ -27,6 +30,7 @@ namespace sides
 		RIGHT_SIDE
 	};
 	
+	// Return the side opposite to s.
 	inline Side oppositeSide(Side s)
 	{
 		switch(s)
@@ -45,6 +49,7 @@ namespace sides
 	}
 }
 
+// A mathematical vector - two points in order.
 struct Vector2
 {
 	int x, y;

@@ -2,6 +2,7 @@
 #include "player.h"
 #include <iostream>
 
+// Default constructor.
 Player::Player():
 	AnimatedSprite()
 {
@@ -11,6 +12,7 @@ Player::Player():
 	on_ground = false;
 }
 
+// Constructor.
 Player::Player(Graphics &graphics, Vector2 spawn_point):
 	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100), dx(0), dy(0), facing(RIGHT), on_ground(false)
 {
@@ -19,31 +21,34 @@ Player::Player(Graphics &graphics, Vector2 spawn_point):
 	playAnimation("IdleRight");
 }
 
+// Logic to execute after an animation finishes.
 void Player::animationDone(std::string name)
-{
-	
-}
+{}
 
+// Draw player sprite onto the screen.
 void Player::draw(Graphics &graphics)
 {
 	AnimatedSprite::draw(graphics, pos_x, pos_y);
 }
 
+// Getter for pos_x.
 float Player::getX()
 {
 	return pos_x;
 }
 
+// Getter for pos_y;
 float Player::getY()
 {
 	return pos_y;
 }
 
+// Handles collisions with all colliding slopes.
 void Player::handleSlopeCollisions(std::vector<Slope> &slopes)
 {
-	for(unsigned int i = 0; i < slopes.size(); i++)
+	for(unsigned int i = 0; i < slopes.size(); ++i)
 	{
-		//where on the slope the player is touching
+		// Where on the slope the player is touching.
 		int b = slopes[i].getPoint1().y - slopes[i].getSlope() * slopes[i].getPoint1().x;
 		int center_x = bounding_box.centerX();
 		int y = slopes[i].getSlope() * center_x + b;
@@ -56,10 +61,11 @@ void Player::handleSlopeCollisions(std::vector<Slope> &slopes)
 	//std::cerr << pos_y << std::endl;
 }
 
+// Handles collisions with all colliding tiles.
 void Player::handleTileCollisions(std::vector<Rectangle> &rects)
 {
-	//check collision's side
-	for(unsigned int i = 0; i < rects.size(); i++)
+	// Check collision's side.
+	for(unsigned int i = 0; i < rects.size(); ++i)
 	{
 		sides::Side collision_side = collisionSide(rects[i]);
 		if(collision_side != sides::NO_SIDE)
@@ -93,6 +99,7 @@ void Player::handleTileCollisions(std::vector<Rectangle> &rects)
 	}
 }
 
+// Start moving up.
 void Player::jump()
 {
 	if(on_ground)
@@ -102,6 +109,7 @@ void Player::jump()
 	}
 }
 
+// Start moving left.
 void Player::moveLeft()
 {
 	dx = -stats::SPEED;
@@ -109,6 +117,7 @@ void Player::moveLeft()
 	playAnimation("RunLeft");
 }
 
+// Start moving right.
 void Player::moveRight()
 {
 	dx = stats::SPEED;
@@ -116,6 +125,7 @@ void Player::moveRight()
 	playAnimation("RunRight");
 }
 
+// Seet the player animations.
 void Player::setupAnimations()
 {
 	addAnimation(1, 0, 0, "IdleLeft", 16, 16, Vector2(0, 0));
@@ -124,15 +134,17 @@ void Player::setupAnimations()
 	addAnimation(3, 0, 1, "RunRight", 16, 16, Vector2(0, 0));
 }
 
+// Stop horizontal movement.
 void Player::stopMoving()
 {
 	dx = 0;
 	playAnimation(facing == RIGHT ? "IdleRight" : "IdleLeft");
 }
-	
+
+// Update sprite position.
 void Player::update(float elapsed_time)
 {
-	//apply gravity
+	// Apply gravity.
 	if(dy <= stats::GRAVITY_CAP)
 	{
 		dy += stats::GRAVITY * elapsed_time;

@@ -6,12 +6,12 @@
 
 class Graphics;
 
-//The class responsible for running the main game loop.
+// The class responsible for running the main game loop.
 
 class Game
 {
-	Level level;
-	Player player;
+	Level level; 	// main level of the game
+	Player player;	// player character
 	
 	void draw(Graphics &graphics);
 	void gameLoop();

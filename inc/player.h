@@ -4,8 +4,7 @@
 #include "animated_sprite.h"
 #include "slope.h"
 
-//Player constants
-
+// Player constants.
 namespace stats
 {
 	const float GRAVITY = 0.002;
@@ -18,9 +17,9 @@ namespace stats
 
 class Player: public AnimatedSprite
 {
-	float dx, dy;
-	Direction facing;
-	bool on_ground;
+	float dx, dy;		// movement offset
+	Direction facing;	// direction that the player is facing
+	bool on_ground;		// false if player is in mid air
 	
 public:
 
@@ -34,8 +33,8 @@ public:
 	void update(float elapsed_time);
 	
 	virtual void animationDone(std::string name);
-	void handleSlopeCollisions(std::vector<Slope> &slopes);	  //handles collisions with all colliding slopes
-	void handleTileCollisions(std::vector<Rectangle> &rects); //handles collisions with all colliding tiles
+	void handleSlopeCollisions(std::vector<Slope> &slopes);
+	void handleTileCollisions(std::vector<Rectangle> &rects);
 	virtual void setupAnimations();
 	
 	void jump();	   //starts jumping

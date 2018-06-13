@@ -4,15 +4,15 @@
 #include <string>
 #include <vector>
 
-//struct holding utility functions
+// Struct holding utility functions.
 
 struct Utils
 {
-	//split text by c, store in parts, return the size
+	// Split text by c, store in parts, return the size.
 	static unsigned int split(std::string text, std::vector<std::string> &parts, char c)
 	{
 		int start_pos = 0;
-		int pos = text.find(c);
+		std::string::size_type pos = text.find(c);
 		parts.clear();
 		
 		while(pos != std::string::npos)

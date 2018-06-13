@@ -10,13 +10,13 @@ class SDL_Surface;
 struct SDL_Texture;
 class SDL_Window;
 
-//The class responsible for dealing with the game graphics.
+// The class responsible for dealing with game graphics.
 
 class Graphics
 {
-	std::map<std::string, SDL_Surface*> spritesheets;
-	SDL_Renderer *renderer;
-	SDL_Window *window;
+	std::map<std::string, SDL_Surface*> spritesheets;	// set of all spritesheets used in the game
+	SDL_Renderer *renderer;								// graphics renderer
+	SDL_Window *window;									// game window
 	
 public:
 	Graphics();
@@ -24,10 +24,10 @@ public:
 	
 	SDL_Renderer* getRenderer();
 	
-	void blitSurface(SDL_Texture *image, SDL_Rect *src, SDL_Rect *dest); //draw image to the screen
-	void clear(); //clear the renderer
-	void flip(); //render the screen onto the window
-	SDL_Surface* loadImage(const std::string &file_path); //load image into spritesheets if it doesn't already exist, either way returns the the image
+	void blitSurface(SDL_Texture *image, SDL_Rect *src, SDL_Rect *dest);
+	void clear();
+	void flip();
+	SDL_Surface* loadImage(const std::string &file_path);
 };
 
 #endif

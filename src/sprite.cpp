@@ -3,14 +3,16 @@
 #include "graphics.h"
 #include "sprite.h"
 
+// Default constructor.
 Sprite::Sprite()
 {
 	pos_x = 0;
 	pos_y = 0;
 	src_rect = { 0, 0, 0, 1 };
-	spritesheet = NULL;
+	spritesheet = nullptr;
 }
 
+// Constructor.
 Sprite::Sprite(Graphics &graphics, std::string file_path, int src_x, int src_y, int h, int w, float start_x, float start_y):
 	pos_x(start_x), pos_y(start_y)
 {
@@ -26,11 +28,13 @@ Sprite::Sprite(Graphics &graphics, std::string file_path, int src_x, int src_y, 
 	bounding_box = Rectangle(pos_x, pos_y, src_rect.w * globals::SPRITE_SCALE, src_rect.h * globals::SPRITE_SCALE);
 }
 
+// Destructor.
 Sprite::~Sprite() {}
 
+// Determine on which side the collision is happening.
 sides::Side Sprite::collisionSide(Rectangle &rect)
 {
-	int dr, dl, dt, db; //delta right, left, top, bottom
+	int dr, dl, dt, db; // delta right, left, top, bottom
 	dr = abs(bounding_box.rightBorder() - rect.leftBorder());
 	dl = abs(rect.rightBorder() - bounding_box.leftBorder());
 	dt = abs(rect.bottomBorder() - bounding_box.topBorder());
@@ -38,7 +42,7 @@ sides::Side Sprite::collisionSide(Rectangle &rect)
 	
 	int a[4] = { dr, dl, dt, db };
 	int mini = a[0];
-	for(int i = 1; i < 4; i++)
+	for(int i = 1; i < 4; ++i)
 	{
 		if(mini > a[i])
 		{
@@ -59,17 +63,20 @@ sides::Side Sprite::collisionSide(Rectangle &rect)
 		return sides::NO_SIDE;
 }
 
+// Draw sprite onto the screen.
 void Sprite::draw(Graphics &graphics, int x, int y)
 {
 	SDL_Rect dest_rect = { x, y, src_rect.w * globals::SPRITE_SCALE, src_rect.h * globals::SPRITE_SCALE };
 	graphics.blitSurface(spritesheet, &src_rect, &dest_rect);
 }
 
+// Getter for bounding box.
 Rectangle& Sprite::getBoundingBox()
 {
 	return bounding_box;
 }
 
+// Update the bounding box position.
 void Sprite::update()
 {
 	bounding_box = Rectangle(pos_x, pos_y, src_rect.w * globals::SPRITE_SCALE, src_rect.h * globals::SPRITE_SCALE);

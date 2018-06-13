@@ -6,14 +6,14 @@
 class Graphics;
 struct SDL_Texture;
 
-//The class responsible for drawing tiles
+// The class responsible for drawing tiles.
 
 class Tile
 {
-	Vector2 map_pos;
-	Vector2 size;
-	SDL_Texture *tileset;
-	Vector2 tileset_pos;
+	Vector2 map_pos;		// tile position on the screen
+	Vector2 size;			// tile height and width
+	SDL_Texture *tileset;	// tileset image
+	Vector2 tileset_pos;	// tile position on the tileset
 	
 public:
 
