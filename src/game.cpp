@@ -71,7 +71,29 @@ void Game::gameLoop()
 			}
 		}
 		
-		// Handle specific inputs.
+		/* Handle specific inputs. */
+
+		// Looking up and down.
+		if(input.wasPressed(SDL_SCANCODE_UP))
+		{
+			player.lookUp();
+		}
+		else if(input.wasPressed(SDL_SCANCODE_DOWN))
+		{
+			player.lookDown();
+		}
+
+		if(input.wasReleased(SDL_SCANCODE_UP))
+		{
+			player.stopLookingUp();
+		}
+		
+		if(input.wasReleased(SDL_SCANCODE_DOWN))
+		{
+			player.stopLookingDown();
+		}
+
+		// Moving.
 		if(input.wasPressed(SDL_SCANCODE_ESCAPE))
 		{
 			return;
@@ -89,6 +111,7 @@ void Game::gameLoop()
 			player.stopMoving();
 		}
 
+		// Jumping.
 		if(input.wasPressed(SDL_SCANCODE_Z))
 		{
 			player.jump();

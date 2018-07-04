@@ -20,6 +20,8 @@ class Player: public AnimatedSprite
 	float dx, dy;		// movement offset
 	Direction facing;	// direction that the player is facing
 	bool on_ground;		// false if player is in mid air
+	bool looking_up;	// true if player is looking up
+	bool looking_down;	// true if player is looking down
 	
 public:
 
@@ -37,10 +39,15 @@ public:
 	void handleTileCollisions(std::vector<Rectangle> &rects);
 	virtual void setupAnimations();
 	
-	void jump();	   //starts jumping
-	void moveLeft();   //move the player by -dx
-	void moveRight();  //move the player by +dx
-	void stopMoving(); //play the idle animation
+	void jump();
+	void moveLeft();
+	void moveRight();
+	void stopMoving();
+
+	void lookUp();
+	void stopLookingUp();
+	void lookDown();
+	void stopLookingDown();
 };
 
 #endif

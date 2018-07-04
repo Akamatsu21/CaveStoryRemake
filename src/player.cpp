@@ -10,11 +10,14 @@ Player::Player():
 	dy = 0;
 	facing = RIGHT;
 	on_ground = false;
+	looking_up = false;
+	looking_down = false;
 }
 
 // Constructor.
 Player::Player(Graphics &graphics, Vector2 spawn_point):
-	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100), dx(0), dy(0), facing(RIGHT), on_ground(false)
+	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100), dx(0), dy(0),
+	facing(RIGHT), on_ground(false), looking_up(false), looking_down(false)
 {
 	graphics.loadImage("..\\content\\sprites\\MyChar.png");
 	setupAnimations();
@@ -109,36 +112,121 @@ void Player::jump()
 	}
 }
 
+// Make the character look down.
+void Player::lookDown()
+{
+	looking_down = true;
+}
+
+// Make the character look up.
+void Player::lookUp()
+{
+	looking_up = true;
+}
+
+
 // Start moving left.
 void Player::moveLeft()
 {
+	if(looking_down && on_ground)
+	{
+		// Player is in interaction mode, so not allowed to move!
+		return;
+	}
+
 	dx = -stats::SPEED;
 	facing = LEFT;
-	playAnimation("RunLeft");
+
+	// Choose correct moving animation.
+	if(looking_up)
+	{
+		playAnimation("RunLeftLookUp");
+	}
+	else
+	{
+		playAnimation("RunLeft");
+	}
 }
 
 // Start moving right.
 void Player::moveRight()
 {
+	if(looking_down && on_ground)
+	{
+		// Player is in interaction mode, so not allowed to move!
+		return;
+	}
+
 	dx = stats::SPEED;
 	facing = RIGHT;
-	playAnimation("RunRight");
+
+	// Choose correct moving animation.
+	if(looking_up)
+	{
+		playAnimation("RunRightLookUp");
+	}
+	else
+	{
+		playAnimation("RunRight");
+	}
 }
 
 // Seet the player animations.
 void Player::setupAnimations()
 {
 	addAnimation(1, 0, 0, "IdleLeft", 16, 16, Vector2(0, 0));
+	addAnimation(1, 3, 0, "IdleLeftLookUp", 16, 16, Vector2(0, 0));
+
 	addAnimation(1, 0, 1, "IdleRight", 16, 16, Vector2(0, 0));
+	addAnimation(1, 3, 1, "IdleRightLookUp", 16, 16, Vector2(0, 0));
+	
 	addAnimation(3, 0, 0, "RunLeft", 16, 16, Vector2(0, 0));
+	addAnimation(3, 3, 0, "RunLeftLookUp", 16, 16, Vector2(0, 0));
+
 	addAnimation(3, 0, 1, "RunRight", 16, 16, Vector2(0, 0));
+	addAnimation(3, 3, 1, "RunRightLookUp", 16, 16, Vector2(0, 0));
+
+	addAnimation(1, 6, 0, "JumpLeftLookDown", 16, 16, Vector2(0, 0));
+	addAnimation(1, 6, 1, "JumpRightLookDown", 16, 16, Vector2(0, 0));
+
+	addAnimation(1, 7, 0, "InteractLeft", 16, 16, Vector2(0, 0));
+	addAnimation(1, 7, 1, "InteractRight", 16, 16, Vector2(0, 0));
+}
+
+// Stop the player looking down.
+void Player::stopLookingDown()
+{
+	looking_down = false;
+}
+
+// Stop the player looking up.
+void Player::stopLookingUp()
+{
+	looking_up = false;
 }
 
 // Stop horizontal movement.
 void Player::stopMoving()
 {
 	dx = 0;
-	playAnimation(facing == RIGHT ? "IdleRight" : "IdleLeft");
+
+	// Choose correct standing animation.
+	if(looking_up)
+	{
+		playAnimation(facing == RIGHT ? "IdleRightLookUp" : "IdleLeftLookUp");
+	}
+	else if(looking_down && on_ground)
+	{
+		playAnimation(facing == RIGHT ? "InteractRight" : "InteractLeft");
+	}
+	else if(looking_down && !on_ground)
+	{
+		playAnimation(facing == RIGHT ? "JumpRightLookDown" : "JumpLeftLookDown");
+	}
+	else
+	{
+		playAnimation(facing == RIGHT ? "IdleRight" : "IdleLeft");
+	}
 }
 
 // Update sprite position.
@@ -150,10 +238,10 @@ void Player::update(float elapsed_time)
 		dy += stats::GRAVITY * elapsed_time;
 	}
 	
-	//move by dx
+	// Move by dx.
 	pos_x += dx * elapsed_time;
 	
-	//move by dy
+	// Move by dy.
 	pos_y += dy * elapsed_time;
 	
 	AnimatedSprite::update(elapsed_time);
