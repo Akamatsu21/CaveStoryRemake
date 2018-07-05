@@ -6,18 +6,21 @@
 Player::Player():
 	AnimatedSprite()
 {
+	current_hp = 0;
+	max_hp = 0;
 	dx = 0;
 	dy = 0;
 	facing = RIGHT;
-	on_ground = false;
 	looking_up = false;
 	looking_down = false;
+	on_ground = false;
 }
 
 // Constructor.
 Player::Player(Graphics &graphics, Vector2 spawn_point):
-	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100), dx(0), dy(0),
-	facing(RIGHT), on_ground(false), looking_up(false), looking_down(false)
+	AnimatedSprite(graphics, "..\\content\\sprites\\MyChar.png", 0, 0, 16, 16, spawn_point.x, spawn_point.y, 100),
+	current_hp(3), max_hp(3), dx(0), dy(0),
+	facing(RIGHT), looking_up(false), looking_down(false), on_ground(false)
 {
 	graphics.loadImage("..\\content\\sprites\\MyChar.png");
 	setupAnimations();
@@ -34,16 +37,16 @@ void Player::draw(Graphics &graphics)
 	AnimatedSprite::draw(graphics, pos_x, pos_y);
 }
 
-// Getter for pos_x.
-float Player::getX()
+// Getter for current_hp.
+int Player::getCurrentHP()
 {
-	return pos_x;
+	return current_hp;
 }
 
-// Getter for pos_y;
-float Player::getY()
+// Getter for max_hp.
+int Player::getMaxHP()
 {
-	return pos_y;
+	return max_hp;
 }
 
 // Handles collisions with all colliding slopes.

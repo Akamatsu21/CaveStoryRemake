@@ -17,19 +17,21 @@ namespace stats
 
 class Player: public AnimatedSprite
 {
-	float dx, dy;		// movement offset
-	Direction facing;	// direction that the player is facing
-	bool on_ground;		// false if player is in mid air
-	bool looking_up;	// true if player is looking up
-	bool looking_down;	// true if player is looking down
+	int current_hp, max_hp;	// how much HP the player has at the moment, and how much can he have at most
+	float dx, dy;			// movement offset
+	Direction facing;		// direction that the player is facing
+	bool looking_up;		// true if player is looking up
+	bool looking_down;		// true if player is looking down
+	bool on_ground;			// false if player is in mid air
 	
 public:
 
 	Player();
 	Player(Graphics &graphics, Vector2 spawn_point);
 	
-	inline float getX();
-	inline float getY();
+	inline void reduceHP() { --current_hp; }
+	int getCurrentHP();
+	int getMaxHP();
 	
 	void draw(Graphics &graphics);
 	void update(float elapsed_time);

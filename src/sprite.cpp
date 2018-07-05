@@ -63,6 +63,12 @@ sides::Side Sprite::collisionSide(Rectangle &rect)
 		return sides::NO_SIDE;
 }
 
+// Overloaded draw function - when no coordinates are given, assume starting coordinates.
+void Sprite::draw(Graphics &graphics)
+{
+	draw(graphics, pos_x, pos_y);
+}
+
 // Draw sprite onto the screen.
 void Sprite::draw(Graphics &graphics, int x, int y)
 {
@@ -70,10 +76,34 @@ void Sprite::draw(Graphics &graphics, int x, int y)
 	graphics.blitSurface(spritesheet, &src_rect, &dest_rect);
 }
 
-// Getter for bounding box.
+// Getter for bounding_box.
 Rectangle& Sprite::getBoundingBox()
 {
 	return bounding_box;
+}
+
+// Getter for pos_x.
+float Sprite::getX()
+{
+	return pos_x;
+}
+
+// Getter for pos_y.
+float Sprite::getY()
+{
+	return pos_y;
+}
+
+// Setter for src_rect.x.
+void Sprite::setSourceX(int x)
+{
+	src_rect.x = x;
+}
+
+// Setter for src_rect.y.
+void Sprite::setSourceY(int y)
+{
+	src_rect.y = y;
 }
 
 // Update the bounding box position.

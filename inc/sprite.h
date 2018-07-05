@@ -23,11 +23,17 @@ public:
 	Sprite(Graphics &graphics, std::string file_path, int src_x, int src_y, int h, int w, float start_x, float start_y);
 	virtual ~Sprite();
 	
-	void draw(Graphics &graphics, int x, int y);
-	virtual void update();
-	
 	sides::Side collisionSide(Rectangle &rect);
 	Rectangle& getBoundingBox();
+	float getX();
+	float getY();
+
+	void setSourceX(int x);
+	void setSourceY(int y);
+	
+	void draw(Graphics &graphics);
+	void draw(Graphics &graphics, int x, int y);
+	virtual void update();
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "player.h"
 #include "level.h"
+#include "hud.h"
 
 class Graphics;
 
@@ -10,6 +11,7 @@ class Graphics;
 
 class Game
 {
+	HUD hud;		// user HUD
 	Level level; 	// main level of the game
 	Player player;	// player character
 	

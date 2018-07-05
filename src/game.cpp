@@ -24,6 +24,7 @@ void Game::draw(Graphics &graphics)
 	
 	level.draw(graphics);
 	player.draw(graphics);
+	hud.draw(graphics);	// HUD always has to be drawn last!
 	
 	graphics.flip();
 }
@@ -37,6 +38,7 @@ void Game::gameLoop()
 	
 	level = Level(graphics, "map1"); 						// create the level
 	player = Player(graphics, level.getPlayerSpawnPoint());	// create the player
+	hud = HUD(graphics, player);							// create the HUD
 	
 	for(;;)
 	{
@@ -115,6 +117,7 @@ void Game::gameLoop()
 		if(input.wasPressed(SDL_SCANCODE_Z))
 		{
 			player.jump();
+			player.reduceHP();
 		}
 		
 		// Calculate elapsed time and update the objects.
@@ -135,6 +138,7 @@ void Game::update(float elapsed_time)
 {
 	level.update(elapsed_time);
 	player.update(elapsed_time);
+	hud.update(elapsed_time);
 
 	// Check player collisions with other tiles.	
 	std::vector<Rectangle> rects = level.checkTileCollisions(player.getBoundingBox());
