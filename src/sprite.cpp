@@ -94,6 +94,18 @@ float Sprite::getY()
 	return pos_y;
 }
 
+// Setter for src_rect.h.
+void Sprite::setSourceHeight(int h)
+{
+	src_rect.h = h;
+}
+
+// Setter for src_rect.w.
+void Sprite::setSourceWidth(int w)
+{
+	src_rect.w = w;
+}
+
 // Setter for src_rect.x.
 void Sprite::setSourceX(int x)
 {

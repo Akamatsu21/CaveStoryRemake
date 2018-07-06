@@ -7,9 +7,21 @@
 
 class HUD
 {
+	// HP sprites.
+	Sprite current_hp;		// visual representatio of the player hp
 	Sprite hp_bar;			// visual representation of the player health bar
 	Sprite hp_unit_digit;	// numerical representation of the player hp (last digit)
-	Player *player;			// player character whose stats are shown
+
+	// EXP sprites.
+	Sprite exp_bar;		// visual representation of the player experience bar
+	Sprite lvl_number;	// numerical representation of the player level
+	Sprite lvl_label;	// the word "LVL" next to the level number
+
+	// Weapon info sprites. For now just the visual elements.
+	Sprite slash_separator;
+	Sprite dash_placeholders;
+
+	Player *player;	// player character whose stats are shown
 
 public:
 	HUD();

@@ -28,6 +28,8 @@ public:
 	float getX();
 	float getY();
 
+	void setSourceHeight(int h);
+	void setSourceWidth(int w);
 	void setSourceX(int x);
 	void setSourceY(int y);
 	

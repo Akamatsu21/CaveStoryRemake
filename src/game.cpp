@@ -7,7 +7,7 @@
 namespace
 {
 	const int FPS = 50;				// maximum frames per second
-	const int MAX_FRAME_TIME = 100;	// maximum frame length
+	const int MAX_FRAME_TIME = 1000 / FPS;	// maximum frame length
 }
 
 // Constructor - starts the game.
