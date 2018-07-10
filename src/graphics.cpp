@@ -4,10 +4,11 @@
 #include "globals.h"
 #include "graphics.h"
 
+// Default constructor.
 Graphics::Graphics()
 {
-	SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &window, &renderer);
-	SDL_SetWindowTitle(window, "Cavestory");
+	window = nullptr;
+	renderer = nullptr;
 }
 
 // Draws image to the screen.
@@ -26,6 +27,13 @@ void Graphics::clear()
 void Graphics::flip()
 {
 	SDL_RenderPresent(renderer);
+}
+
+// Initialise window.
+void Graphics::init()
+{
+	SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &window, &renderer);
+	SDL_SetWindowTitle(window, "Cavestory");
 }
 
 // Getter for the renderer.
@@ -53,6 +61,7 @@ SDL_Surface* Graphics::loadImage(const std::string &file_path)
 
 Graphics::~Graphics()
 {
+	std::cout << "Window destroyed";
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 }

@@ -32,6 +32,20 @@ Level::~Level()
 	
 }
 
+// Return all doors colliding with rect.
+std::vector<Door> Level::checkDoorCollisions(Rectangle &rect)
+{
+	std::vector<Door> dr;
+	for(unsigned int i = 0; i < doors.size(); ++i)
+	{
+		if(doors[i].collides(rect))
+		{
+			dr.push_back(doors[i]);
+		}
+	}
+	return dr;
+}
+
 // Return all slopes colliding with rect.
 std::vector<Slope> Level::checkSlopeCollisions(Rectangle &rect)
 {
@@ -308,7 +322,7 @@ void Level::loadMap(Graphics &graphics)
 			XMLElement *object_node = object_group->FirstChildElement("object");
 			while(object_node)
 			{
-				// Gett coordinates.
+				// Get coordinates.
 				float px = object_node->FloatAttribute("x");
 				float py = object_node->FloatAttribute("y");
 
@@ -319,6 +333,45 @@ void Level::loadMap(Graphics &graphics)
 					spawn_point = Vector2(std::ceil(px) * globals::SPRITE_SCALE, std::ceil(py) * globals::SPRITE_SCALE);
 				}
 				
+				object_node = object_node->NextSiblingElement("object");
+			}
+		}
+		else if(name == "doors")
+		{
+			// Parse each door.
+			XMLElement *object_node = object_group->FirstChildElement("object");
+			while(object_node)
+			{
+				// Get rectangle coordinates and size.
+				float dx = object_node->FloatAttribute("x");
+				float dy = object_node->FloatAttribute("y");
+				float dw = object_node->FloatAttribute("width");
+				float dh = object_node->FloatAttribute("height");
+				Rectangle rect(dx, dy, dw, dh);
+
+				// Go through properties of this door.
+				XMLElement *properties_node = object_node->FirstChildElement("properties");
+				while(properties_node)
+				{
+					// Parse each property.
+					XMLElement *property_node = properties_node->FirstChildElement("property");
+					while(property_node)
+					{
+						std::string property_name = std::string(property_node->Attribute("name"));
+						if(property_name == "destination")
+						{
+							std::string property_value = std::string(property_node->Attribute("value"));
+
+							// Save the door with given dimensions and the value of this property as destination.
+							doors.push_back(Door(rect, property_value));
+						}
+
+						property_node = property_node->NextSiblingElement("property");
+					}
+
+					properties_node = properties_node->NextSiblingElement("properties");
+				}
+
 				object_node = object_node->NextSiblingElement("object");
 			}
 		}

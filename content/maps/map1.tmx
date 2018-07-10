@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextobjectid="42">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextobjectid="45">
  <tileset firstgid="1" name="PrtCave" tilewidth="16" tileheight="16" tilecount="80" columns="16">
   <image source="../tilesets/PrtCave.png" width="256" height="80"/>
  </tileset>
@@ -695,7 +695,7 @@
    <polyline points="0,0 -15.125,6.125"/>
   </object>
  </objectgroup>
- <objectgroup color="#00c800" name="spawn points">
+ <objectgroup color="#00c800" name="spawn points" offsetx="0.727273" offsety="80">
   <object id="28" name="player" x="150" y="54.6667" width="1.66667" height="2.33333">
    <ellipse/>
   </object>
@@ -712,6 +712,13 @@
   </object>
   <object id="32" x="159.75" y="64.75">
    <polyline points="0,0 16.375,-4.25"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="doors">
+  <object id="42" name="exit" x="147.455" y="54.9091" width="9.45455" height="9.45455">
+   <properties>
+    <property name="destination" value="map2"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

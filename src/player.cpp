@@ -49,6 +49,19 @@ int Player::getMaxHP()
 	return max_hp;
 }
 
+// Handles collision with a door.
+void Player::handleDoorCollision(std::vector<Door> &doors, Level &level, Graphics &graphics)
+{
+	// You can only go through the door when in interaction mode.
+	if(on_ground && looking_down)
+	{
+		// Change the level. Only take into consideration the first door, can't pass through multiple at once.
+		level = Level(graphics, doors[0].getDestination());
+		pos_x = level.getPlayerSpawnPoint().x;
+		pos_y = level.getPlayerSpawnPoint().y;
+	}
+}
+
 // Handles collisions with all colliding slopes.
 void Player::handleSlopeCollisions(std::vector<Slope> &slopes)
 {

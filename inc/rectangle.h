@@ -64,6 +64,12 @@ public:
 	{
 		return pos_x >= 0 && pos_y >= 0 && width >= 0 && height >= 0;
 	}
+
+	// Return the value of this Rectangle.
+	Rectangle getRectangle()
+	{
+		return *this;
+	}
 };
 
 #endif

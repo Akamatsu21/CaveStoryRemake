@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "animated_sprite.h"
-#include "slope.h"
+#include "level.h"
 
 // Player constants.
 namespace stats
@@ -39,6 +39,7 @@ public:
 	void update(float elapsed_time);
 	
 	virtual void animationDone(std::string name);
+	void handleDoorCollision(std::vector<Door> &doors, Level &level, Graphics &graphics);
 	void handleSlopeCollisions(std::vector<Slope> &slopes);
 	void handleTileCollisions(std::vector<Rectangle> &rects);
 	virtual void setupAnimations();

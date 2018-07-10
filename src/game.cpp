@@ -1,6 +1,5 @@
 #include <iostream>
 #include <SDL2\SDL.h>
-#include "graphics.h"
 #include "input.h"
 #include "game.h"
 
@@ -14,11 +13,12 @@ namespace
 Game::Game()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	graphics.init();
 	gameLoop();
 }
 
 // Refresh game graphics.
-void Game::draw(Graphics &graphics)
+void Game::draw()
 {
 	graphics.clear();
 	
@@ -32,7 +32,6 @@ void Game::draw(Graphics &graphics)
 // Core game progression logic.
 void Game::gameLoop()
 {
-	Graphics graphics;						// game graphics
 	Input input;							// game input
 	int last_update_time = SDL_GetTicks();	// get starting time
 	
@@ -129,7 +128,7 @@ void Game::gameLoop()
 		last_update_time = current_time;
 		
 		// Update the screen.
-		draw(graphics);
+		draw();
 	}
 }
 
@@ -152,6 +151,13 @@ void Game::update(float elapsed_time)
 	if(slopes.size() > 0)
 	{
 		player.handleSlopeCollisions(slopes);
+	}
+
+	// Check player collisions with doors.
+	std::vector<Door> doors = level.checkDoorCollisions(player.getBoundingBox());
+	if(doors.size() > 0)
+	{
+		player.handleDoorCollision(doors, level, graphics);
 	}
 }
 

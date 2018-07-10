@@ -27,6 +27,7 @@ public:
 	void blitSurface(SDL_Texture *image, SDL_Rect *src, SDL_Rect *dest);
 	void clear();
 	void flip();
+	void init();
 	SDL_Surface* loadImage(const std::string &file_path);
 };
 

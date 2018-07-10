@@ -5,6 +5,7 @@
 #include <vector>
 #include "animated_tile.h"
 #include "slope.h"
+#include "door.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -27,6 +28,8 @@ class Level
 
 	std::vector<AnimatedTile> animated_tiles;		// all tiles on this level that have animations
 	std::vector<AnimatedTileInfo> animations_info;	// dataset for each animation
+
+	std::vector<Door> doors;	// all doors to other levels located on this level
 	
 	void loadMap(Graphics &graphics);
 	Vector2 getTilesetPosition(Tileset *tset, int gid, int tile_width, int tile_height);
@@ -41,8 +44,9 @@ public:
 	
 	Vector2 getPlayerSpawnPoint();
 	
-	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
+	std::vector<Door> checkDoorCollisions(Rectangle &rect);
 	std::vector<Slope> checkSlopeCollisions(Rectangle &rect);
+	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
 };
 
 // Structure representing a tileset used for level mapping.
