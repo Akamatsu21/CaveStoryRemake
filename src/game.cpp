@@ -116,7 +116,7 @@ void Game::gameLoop()
 		if(input.wasPressed(SDL_SCANCODE_Z))
 		{
 			player.jump();
-			player.reduceHP();
+			//player.reduceHP();
 		}
 		
 		// Calculate elapsed time and update the objects.
@@ -135,7 +135,7 @@ void Game::gameLoop()
 // Update in-game objects,
 void Game::update(float elapsed_time)
 {
-	level.update(elapsed_time);
+	level.update(elapsed_time, player);
 	player.update(elapsed_time);
 	hud.update(elapsed_time);
 

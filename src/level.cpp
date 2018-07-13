@@ -6,6 +6,8 @@
 #include "graphics.h"
 #include "utils.h"
 #include "level.h"
+#include "enemy.h"
+#include "player.h"
 
 using namespace tinyxml2;
 
@@ -28,9 +30,7 @@ Level::Level(Graphics &graphics, std::string name):
 
 // Destructor.
 Level::~Level()
-{
-	
-}
+{}
 
 // Return all doors colliding with rect.
 std::vector<Door> Level::checkDoorCollisions(Rectangle &rect)
@@ -375,6 +375,26 @@ void Level::loadMap(Graphics &graphics)
 				object_node = object_node->NextSiblingElement("object");
 			}
 		}
+		else if(name == "enemies")
+		{
+			// Parse each enemy.
+			XMLElement *object_node = object_group->FirstChildElement("object");
+			while(object_node)
+			{
+				// Get enemy coordinates and name.
+				float ex = object_node->FloatAttribute("x");
+				float ey = object_node->FloatAttribute("y");
+				std::string enemy_name = std::string(object_node->Attribute("name"));
+
+				// Create a new enemy based on the name.
+				if(enemy_name == "bat")
+				{
+					enemies.push_back(std::make_shared<Bat>(graphics, Vector2(std::floor(ex) * globals::SPRITE_SCALE, std::floor(ey) * globals::SPRITE_SCALE)));
+				}
+
+				object_node = object_node->NextSiblingElement("object");
+			}
+		}
 		
 		object_group = object_group->NextSiblingElement("objectgroup");
 	}
@@ -393,13 +413,24 @@ void Level::draw(Graphics &graphics)
 	{
 		tile.draw(graphics);
 	}
+
+	// After the map is ready, draw all enemies on the screen.
+	for(std::shared_ptr<Enemy> enemy : enemies)
+	{
+		enemy->draw(graphics);
+	}
 }
 
 // Update map.
-void Level::update(float elapsed_time)
+void Level::update(float elapsed_time, Player &player)
 {
 	for(AnimatedTile &tile : animated_tiles)
 	{
 		tile.update(elapsed_time);
+	}
+
+	for(std::shared_ptr<Enemy> enemy : enemies)
+	{
+		enemy->update(elapsed_time, player);
 	}
 }

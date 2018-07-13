@@ -3,11 +3,14 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "animated_tile.h"
 #include "slope.h"
 #include "door.h"
 
 class Graphics;
+class Enemy;
+class Player;
 struct SDL_Texture;
 struct Tileset;
 
@@ -29,7 +32,8 @@ class Level
 	std::vector<AnimatedTile> animated_tiles;		// all tiles on this level that have animations
 	std::vector<AnimatedTileInfo> animations_info;	// dataset for each animation
 
-	std::vector<Door> doors;	// all doors to other levels located on this level
+	std::vector<Door> doors;		// all doors to other levels located on this level
+	std::vector<std::shared_ptr<Enemy>> enemies;	// all enemies that spawn on this level
 	
 	void loadMap(Graphics &graphics);
 	Vector2 getTilesetPosition(Tileset *tset, int gid, int tile_width, int tile_height);
@@ -40,7 +44,7 @@ public:
 	~Level();
 	
 	void draw(Graphics &graphics);
-	void update(float elapsed_time);
+	void update(float elapsed_time, Player &player);
 	
 	Vector2 getPlayerSpawnPoint();
 	

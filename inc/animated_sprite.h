@@ -27,8 +27,8 @@ protected:
 	void setVisible(bool vis);
 	void stopAnimation();
 	
-	virtual void animationDone(std::string name) = 0; // happens when animation ends
-	virtual void setupAnimations() = 0; // sets up all of the sprite's animations
+	virtual void animationDone(std::string name) = 0;	// happens when animation ends
+	virtual void setupAnimations() = 0; 				// sets up all of the sprite's animations
 	
 public:
 	AnimatedSprite();

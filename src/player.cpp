@@ -187,7 +187,7 @@ void Player::moveRight()
 	}
 }
 
-// Seet the player animations.
+// Set the player animations.
 void Player::setupAnimations()
 {
 	addAnimation(1, 0, 0, "IdleLeft", 16, 16, Vector2(0, 0));
