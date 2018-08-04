@@ -46,6 +46,20 @@ std::vector<Door> Level::checkDoorCollisions(Rectangle &rect)
 	return dr;
 }
 
+// Return all enemies colliding with rect.
+std::vector<std::shared_ptr<Enemy>> Level::checkEnemyCollisions(Rectangle &rect)
+{
+	std::vector<std::shared_ptr<Enemy>> enm;
+	for(unsigned int i = 0; i < enemies.size(); ++i)
+	{
+		if(enemies[i]->getBoundingBox().collides(rect))
+		{
+			enm.push_back(enemies[i]);
+		}
+	}
+	return enm;
+}
+
 // Return all slopes colliding with rect.
 std::vector<Slope> Level::checkSlopeCollisions(Rectangle &rect)
 {

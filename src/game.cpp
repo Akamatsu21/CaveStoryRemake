@@ -159,6 +159,13 @@ void Game::update(float elapsed_time)
 	{
 		player.handleDoorCollision(doors, level, graphics);
 	}
+
+	// Check player collisions with enemies.
+	std::vector<std::shared_ptr<Enemy>> enemies = level.checkEnemyCollisions(player.getBoundingBox());
+	if(enemies.size() > 0)
+	{
+		player.handleEnemyCollisions(enemies);
+	}
 }
 
 // Destructor.

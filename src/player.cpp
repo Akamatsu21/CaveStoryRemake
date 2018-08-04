@@ -62,6 +62,15 @@ void Player::handleDoorCollision(std::vector<Door> &doors, Level &level, Graphic
 	}
 }
 
+// Handles collisions with all colliding enemies.
+void Player::handleEnemyCollisions(std::vector<std::shared_ptr<Enemy>> &enemies)
+{
+	for(unsigned int i = 0; i < enemies.size(); ++i)
+	{
+		enemies[i]->touchPlayer(this);
+	}
+}
+
 // Handles collisions with all colliding slopes.
 void Player::handleSlopeCollisions(std::vector<Slope> &slopes)
 {
@@ -140,6 +149,18 @@ void Player::lookUp()
 	looking_up = true;
 }
 
+// Change the player HP.
+void Player::modifyHP(int amount)
+{
+	if(amount < (static_cast<int>(current_hp) * -1)) // cast to signed int
+	{
+		current_hp = 0;
+	}
+	else
+	{
+		current_hp += amount;
+	}
+}
 
 // Start moving left.
 void Player::moveLeft()

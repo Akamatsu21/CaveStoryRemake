@@ -49,6 +49,7 @@ public:
 	Vector2 getPlayerSpawnPoint();
 	
 	std::vector<Door> checkDoorCollisions(Rectangle &rect);
+	std::vector<std::shared_ptr<Enemy>> checkEnemyCollisions(Rectangle &rect);
 	std::vector<Slope> checkSlopeCollisions(Rectangle &rect);
 	std::vector<Rectangle> checkTileCollisions(Rectangle &rect);
 };

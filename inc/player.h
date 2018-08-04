@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "animated_sprite.h"
+#include "enemy.h"
 #include "level.h"
 
 // Player constants.
@@ -30,16 +30,17 @@ public:
 
 	Player();
 	Player(Graphics &graphics, Vector2 spawn_point);
-	
-	inline void reduceHP() { --current_hp; }
+
 	int getCurrentHP();
 	int getMaxHP();
+	void modifyHP(int amount);
 	
 	void draw(Graphics &graphics);
 	void update(float elapsed_time);
 	
 	virtual void animationDone(std::string name);
 	void handleDoorCollision(std::vector<Door> &doors, Level &level, Graphics &graphics);
+	void handleEnemyCollisions(std::vector<std::shared_ptr<Enemy>> &enemies);
 	void handleSlopeCollisions(std::vector<Slope> &slopes);
 	void handleTileCollisions(std::vector<Rectangle> &rects);
 	virtual void setupAnimations();
